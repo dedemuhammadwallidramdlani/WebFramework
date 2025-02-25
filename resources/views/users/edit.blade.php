@@ -47,6 +47,16 @@
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
 
+                        <div class="mt-4">
+                            <x-input-label for="roles" :value="__('Roles')" />
+                            <select id="roles" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="roles" required>
+                                <option value="admin" {{ $user->roles === 'admin' || old('roles') === 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="manajer" {{ $user->roles === 'manajer' || old('roles') === 'manajer' ? 'selected' : '' }}>Manajer</option>
+                                <option value="user" {{ $user->roles === 'user' || old('roles') === 'user' ? 'selected' : '' }}>User</option>
+                            </select>
+                            <x-input-error :messages="$errors->get('roles')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <x-danger-link-button class="ms-4" :href="route('users.index')">
                                 {{ __('Back') }}
