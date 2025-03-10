@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\BahanbakuController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\GudangController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('obat', ObatController::class);
     Route::resource('bahanbaku', BahanbakuController::class);
     Route::resource('supplier', SupplierController::class);
-    Route::resource('gudang', ObatController::class);
+    Route::resource('gudang', GudangController::class);
     Route::resource('ekstraksi', ObatController::class);
     Route::resource('pencampuran', ObatController::class);
     Route::resource('transaksi', ObatController::class);
