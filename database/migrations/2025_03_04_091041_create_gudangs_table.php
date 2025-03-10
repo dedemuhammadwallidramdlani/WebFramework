@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('gudangs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('obat_id')->nullable()->constrained('obats')->onDelete('cascade');
+            $table->foreignId('bahanbaku_id')->nullable()->constrained('bahanbakus')->onDelete('cascade');
+            $table->integer('jumlah');
+            $table->date('tanggal_kadaluarsa')->nullable();
             $table->timestamps();
         });
     }

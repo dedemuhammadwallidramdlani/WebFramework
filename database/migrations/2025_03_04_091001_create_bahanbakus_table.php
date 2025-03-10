@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('bahanbakus', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->text('deskripsi')->nullable();
+            $table->string('satuan');
             $table->timestamps();
         });
     }

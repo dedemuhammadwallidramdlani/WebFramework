@@ -23,11 +23,53 @@
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('obat.index')" :active="request()->routeIs('obat.index')">
-                        {{ __('Obat') }}
+                <div x-data="{ open: false }" class="relative hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+    <button @click="open = !open" class="flex items-center px-3 py-2 text-gray-700 dark:text-white">
+        {{ __('Master Data') }}
+        <svg class="w-4 h-4 ms-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </button>
+
+    <div x-show="open" @click.away="open = false"
+        class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
+        <a href="{{ route('obat.index') }}" class="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            Obat
+        </a>
+        <a href="{{ route('bahanbaku.index') }}" class="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            Bahan Baku
+        </a>
+        <a href="{{ route('supplier.index') }}" class="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            Supplier
+        </a>
+    </div>
+
+    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('ekstraksi.index')" :active="request()->routeIs('ekstraksi.index')">
+                        {{ __('Ekstraksi') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('pencampuran.index')" :active="request()->routeIs('pencampuran.index')">
+                        {{ __('Pencampuran') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('transaksi.index')" :active="request()->routeIs('transaksi.index')">
+                        {{ __('Transaksi') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('laporan.index')" :active="request()->routeIs('laporan.index')">
+                        {{ __('Laporan') }}
+                    </x-nav-link>
+                </div>
+
+</div>
+
 
             </div>
 

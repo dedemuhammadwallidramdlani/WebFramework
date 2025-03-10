@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
+            $table->text('isi');
+            $table->date('tanggal_laporan');
             $table->timestamps();
         });
     }

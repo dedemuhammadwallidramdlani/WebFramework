@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Data Obat') }}
+            {{ __('Data Supplier') }}
         </h2>
     </x-slot>
     <div class="py-12">
@@ -10,13 +10,13 @@
                 <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between py-5 mb-5">
                         <div class="md:mt-0 sm:flex-none w-72">
-                            <form action="{{ route('obat.index') }}" method="GET">
-                                <input type="text" name="search" placeholder="Cari obat..."
+                            <form action="{{ route('supplier.index') }}" method="GET">
+                                <input type="text" name="search" placeholder="Cari Supplier..."
                                     class="w-full relative inline-flex items-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300" />
                             </form>
                         </div>
                         <div class="sm:ml-16 sm:mt-0 sm:flex-none">
-                            <a type="button" href="{{ route('obat.create') }}"
+                            <a type="button" href="{{ route('supplier.create') }}"
                                 class="relative inline-flex items-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
                                 Add New
                             </a>
@@ -30,16 +30,13 @@
                                         <span>No</span>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Nama Obat</span>
+                                        <span>Nama</span>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Deskripsi</span>
+                                        <span>Alamat</span>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Stok</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Harga</span>
+                                        <span>Kontak</span>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
                                         <span>Aksi</span>
@@ -48,31 +45,28 @@
                             </thead>
                             <tbody>
                                 @php
-                                    $i = ($dataobat->currentPage() - 1) * $dataobat->perPage() + 1;
+                                    $i = ($supplier->currentPage() - 1) * $supplier->perPage() + 1;
                                 @endphp
-                                @forelse($dataobat as $obat)
+                                @forelse($supplier as $item) {{-- Ganti $supplier dengan $item --}}
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                             {{ $i++ }}
                                         </td>
                                         <td class="px-6 py-2 text-center">
-                                            {{ $obat->nama_obat }}
+                                            {{ $item->nama }}
                                         </td>
                                         <td class="px-6 py-2 text-center">
-                                            {{ $obat->deskripsi }}
+                                            {{ $item->alamat }}
                                         </td>
                                         <td class="px-6 py-2 text-center">
-                                            {{ $obat->stok }}
+                                            {{ $item->kontak }}
                                         </td>
                                         <td class="px-6 py-2 text-center">
-                                            {{ $obat->harga }}
-                                        </td>
-                                        <td class="px-6 py-2 text-center">
-                                            <form id="delete-form-{{ $obat->id }}" action="{{ route('obat.destroy', $obat->id) }}" method="POST">
-                                                <a href="{{ route('obat.edit', $obat->id) }}" class="focus:outline-none text-gray-50 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit</a>
+                                            <form id="delete-form-{{ $item->id }}" action="{{ route('supplier.destroy', $item->id) }}" method="POST">
+                                                <a href="{{ route('supplier.edit', $item->id) }}" class="focus:outline-none text-gray-50 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit</a>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" onclick="confirmDelete({{ $obat->id }})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus</button>
+                                                <button type="button" onclick="confirmDelete({{ $item->id }})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -84,7 +78,7 @@
                             </tbody>
                         </table>
                         <div class="relative p-3">
-                            {{ $dataobat->links() }}
+                            {{ $supplier->links() }}
                         </div>
                     </div>
                 </div>
@@ -92,7 +86,7 @@
         </div>
     </div>
     <script>
-        function confirmDelete(obatId) {
+        function confirmDelete(supplierId) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Anda tidak akan dapat mengembalikan ini!",
@@ -104,7 +98,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + obatId).submit();
+                    document.getElementById('delete-form-' + supplierId).submit();
                 }
             });
         }

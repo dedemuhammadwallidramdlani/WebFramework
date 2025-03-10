@@ -16,4 +16,20 @@ class Obat extends Model
         'stok',
         'harga',
     ];
+
+public function gudangs()
+{
+    return $this->hasOne(Gudang::class);
+}
+
+public function pencampurans()
+{
+    return $this->hasMany(Pencampuran::class);
+}
+
+public function transaksis()
+{
+    return $this->hasMany(Transaksi::class);
+}
+
 }

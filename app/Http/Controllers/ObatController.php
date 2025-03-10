@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Obat;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class ObatController extends Controller
@@ -12,11 +12,10 @@ class ObatController extends Controller
      */
     public function index()
     {
-        $Obat = Obat::when(request()->search, function ($Obat) {
-            $Obat = $Obat->where('name', 'like', '%' . request()->search . '%');
-        })->paginate(10);
-        return view('Obat.index', compact('Obat'))
-        ->with('i', (request()->input('page', 1) - 1) * 10);
+        $dataobat = Obat::orderBy('nama_obat', 'asc')->paginate(15);
+        return view('obat.index', [
+            "dataobat" => $dataobat
+        ]);
     }
 
     /**
@@ -24,7 +23,7 @@ class ObatController extends Controller
      */
     public function create()
     {
-        //
+        return view('obat.create'); // Pastikan view ini ada
     }
 
     /**
@@ -32,30 +31,16 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_obat' => 'required|string',
-            'deskripsi' => 'required|string',
-            'stok' => 'required|string',
-            'harga' => 'required|integer',
+        $data = $request->validate([
+            'nama_obat'     => 'required',
+            'deskripsi'      => 'required',
+            'stok'      => 'required',
+            'harga'      => 'required',
         ]);
+        Obat::create($data);
 
-        try {
-            $user = new User([
-                'nama_obat'  => $request->nama_Obat,
-                'deskripsi' => $request->deskripsi,
-                'stock' => $request->stock,
-                'harga' => $request->harga,
-                
-            ]);
-
-            $user->save();
-            return redirect()->route('obat.index')
-            ->with('success', 'User '.$user->name.' has been added successfully!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
-        }
+        return redirect('/obat');
     }
-    
 
     /**
      * Display the specified resource.
@@ -68,24 +53,35 @@ class ObatController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(Obat $obat)
+{
+    return view('obat.edit', compact('obat'));
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Obat $obat)
     {
-        //
+    $request->validate([
+        'nama_obat'     => 'required',
+            'deskripsi'      => 'required',
+            'stok'      => 'required',
+            'harga'      => 'required',
+    ]);
+
+    $obat->update($request->all());
+
+    return redirect()->route('obat.index')->with('success', 'Obat updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Obat $obat)
     {
-        //
+    $obat->delete();
+
+    return redirect()->route('obat.index')->with('success', 'Obat deleted successfully.');
     }
 }

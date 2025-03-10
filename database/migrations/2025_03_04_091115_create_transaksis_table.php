@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('obat_id')->constrained('obats')->onDelete('cascade');
+            $table->integer('jumlah');
+            $table->date('tanggal_transaksi');
+            $table->decimal('total_harga', 10, 2);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

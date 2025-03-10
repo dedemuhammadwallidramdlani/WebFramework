@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('ektraksis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bahanbaku_id')->constrained('bahanbakus')->onDelete('cascade');
+            $table->decimal('hasil_ekstraksi', 10, 2);
+            $table->string('satuan_hasil');
+            $table->date('tanggal_ekstraksi');
             $table->timestamps();
         });
     }

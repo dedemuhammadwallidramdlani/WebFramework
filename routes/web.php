@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ObatController;
+use App\Http\Controllers\BahanbakuController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +21,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('users', UserController::class);
     Route::resource('obat', ObatController::class);
+    Route::resource('bahanbaku', BahanbakuController::class);
+    Route::resource('supplier', SupplierController::class);
+    Route::resource('gudang', ObatController::class);
+    Route::resource('ekstraksi', ObatController::class);
+    Route::resource('pencampuran', ObatController::class);
+    Route::resource('transaksi', ObatController::class);
+    Route::resource('laporan', ObatController::class);
 });
 
 require __DIR__.'/auth.php';
