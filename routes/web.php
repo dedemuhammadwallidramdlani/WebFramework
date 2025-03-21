@@ -7,6 +7,10 @@ use App\Http\Controllers\ObatController;
 use App\Http\Controllers\BahanbakuController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GudangController;
+use App\Http\Controllers\EkstraksiController;
+use App\Http\Controllers\PencampuranController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,10 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('bahanbaku', BahanbakuController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('gudang', GudangController::class);
-    Route::resource('ekstraksi', ObatController::class);
-    Route::resource('pencampuran', ObatController::class);
-    Route::resource('transaksi', ObatController::class);
-    Route::resource('laporan', ObatController::class);
+    Route::resource('ekstraksi', EkstraksiController::class);
+    Route::resource('pencampuran', PencampuranController::class);
+    Route::resource('transaksi', TransaksiController::class);
+    Route::resource('laporan', LaporanController::class);
 });
 
 require __DIR__.'/auth.php';
