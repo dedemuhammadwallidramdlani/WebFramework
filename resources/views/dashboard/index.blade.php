@@ -8,58 +8,57 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Total Penjualan -->
+
                 <div class="bg-yellow-100 dark:bg-yellow-900 overflow-hidden shadow-sm sm:rounded-lg h-full">
                     <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center">
                         <i class="fas fa-users mr-4 text-yellow-500 dark:text-yellow-300 text-2xl"></i>
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">{{ __('Total Users') }}</h3>
-                            {{-- Mengambil nilai dari variabel $totalUsers --}}
-                            <p class="mt-2 text-2xl font-bold">{{ $totalUsers }}</p>
+                            <h3 class="text-lg font-semibold mb-4">{{ __('Users') }}</h3>
+                            <p class="mt-2">{{ $users }}</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="bg-blue-100 dark:bg-blue-900 overflow-hidden shadow-sm sm:rounded-lg h-full">
                     <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center">
-                        <i class="fas fa-pills mr-4 text-blue-500 dark:text-blue-300 text-2xl"></i> {{-- Icon lebih cocok untuk obat --}}
+                        <i class="fas fa-cash-register mr-4 text-blue-500 dark:text-blue-300 text-2xl"></i>
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">{{ __('Total Data Obat') }}</h3>
-                            {{-- Mengambil nilai dari variabel $totalObat --}}
-                            <p class="mt-2 text-2xl font-bold">{{ $totalObat }}</p>
+                            <h3 class="text-lg font-semibold mb-4">{{ __('Data Obat') }}</h3>
+                            <p class="mt-2">{{ __('Rp 10.000.000') }}</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Card 2: Jumlah Produk -->
                 <div class="bg-green-100 dark:bg-green-900 overflow-hidden shadow-sm sm:rounded-lg h-full">
                     <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center">
-                        <i class="fas fa-cash-register mr-4 text-green-500 dark:text-green-300 text-2xl"></i>
+                        <i class="fas fa-pills mr-4 text-green-500 dark:text-green-300 text-2xl"></i>
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">{{ __('Total Data Transaksi') }}</h3>
-                            {{-- Mengambil nilai dari variabel $totalTransaksi --}}
-                            <p class="mt-2 text-2xl font-bold">{{ $totalTransaksi }}</p>
+                            <h3 class="text-lg font-semibold mb-4">{{ __('Data Transaksi') }}</h3>
+                            <p class="mt-2">{{ __('150 Produk') }}</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Card 3: Jumlah Pelanggan -->
+                
+
+                <!-- Card 4: Pesanan Baru -->
                 <div class="bg-red-100 dark:bg-red-900 overflow-hidden shadow-sm sm:rounded-lg h-full">
                     <div class="p-6 text-gray-900 dark:text-gray-100 flex items-center">
-                        <i class="fas fa-money-bill-wave mr-4 text-red-500 dark:text-red-300 text-2xl"></i> {{-- Icon lebih cocok untuk pendapatan --}}
+                        <i class="fas fa-shopping-cart mr-4 text-red-500 dark:text-red-300 text-2xl"></i>
                         <div>
                             <h3 class="text-lg font-semibold mb-4">{{ __('Total Pendapatan') }}</h3>
-                            {{-- Mengambil nilai dari variabel $totalPendapatan --}}
-                            <p class="mt-2 text-2xl font-bold">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</p>
+                            <p class="mt-2">{{ __('15 Pesanan') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+
             
-            {{-- Anda bisa menambahkan grafik atau informasi lain di sini --}}
 
-        </div>
-    </div>
-
-    {{-- Pastikan Anda sudah menyertakan Font Awesome jika ingin ikonnya tampil --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-    {{-- Script Chart.js mungkin diperlukan jika Anda ingin menambahkan grafik --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    
 </x-app-layout>

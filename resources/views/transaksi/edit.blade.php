@@ -11,31 +11,42 @@
                     <form method="POST" action="{{ route('transaksi.update', $transaksi->id) }}">
                         @csrf
                         @method('PUT')
+                        
+                        <!-- Obat Dropdown -->
                         <div>
                             <x-input-label for="obat_id" :value="__('Nama Obat')" />
-                            <x-text-input id="obat_id" class="block mt-1 w-full" type="text" name="obat_id"
-                                :value="$transaksi->obat_id ?? old('obat_id')" required autofocus autocomplete="obat_id" />
+                            <select id="obat_id" name="obat_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required>
+                                <option value="">Pilih Obat</option>
+                                @foreach($obats as $obat)
+                                    <option value="{{ $obat->id }}" {{ $transaksi->obat_id == $obat->id ? 'selected' : '' }}>
+                                        {{ $obat->nama_obat }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <x-input-error :messages="$errors->get('obat_id')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="jumlah" :value="__('Deskripsi')" />
-                            <x-text-input id="jumlah" class="block mt-1 w-full" type="text" name="jumlah"
-                                :value="$transaksi->jumlah ?? old('jumlah')" required autofocus autocomplete="jumlah" />
+                        <!-- Jumlah -->
+                        <div class="mt-4">
+                            <x-input-label for="jumlah" :value="__('Jumlah')" />
+                            <x-text-input id="jumlah" class="block mt-1 w-full" type="number" name="jumlah" 
+                                :value="old('jumlah', $transaksi->jumlah)" required />
                             <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="tanggal_transaksi" :value="__('Stok')" />
-                            <x-text-input id="tanggal_transaksi" class="block mt-1 w-full" type="text" name="tanggal_transaksi"
-                                :value="$transaksi->tanggal_transaksi ?? old('tanggal_transaksi')" required autofocus autocomplete="tanggal_transaksi" />
+                        <!-- Tanggal Transaksi -->
+                        <div class="mt-4">
+                            <x-input-label for="tanggal_transaksi" :value="__('Tanggal Transaksi')" />
+                            <x-text-input id="tanggal_transaksi" class="block mt-1 w-full" type="date" name="tanggal_transaksi" 
+                                :value="old('tanggal_transaksi', $transaksi->tanggal_transaksi)" required />
                             <x-input-error :messages="$errors->get('tanggal_transaksi')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="total_harga" :value="__('Harga')" />
-                            <x-text-input id="total_harga" class="block mt-1 w-full" type="text" name="total_harga"
-                                :value="$transaksi->total_harga ?? old('total_harga')" required autofocus autocomplete="total_harga" />
+                        <!-- Total Harga -->
+                        <div class="mt-4">
+                            <x-input-label for="total_harga" :value="__('Total Harga')" />
+                            <x-text-input id="total_harga" class="block mt-1 w-full" type="number" name="total_harga" 
+                                :value="old('total_harga', $transaksi->total_harga)" required />
                             <x-input-error :messages="$errors->get('total_harga')" class="mt-2" />
                         </div>
 

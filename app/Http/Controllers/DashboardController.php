@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;     // Pastikan model User sudah ada dan terimport
+use App\Models\Obat;     // Pastikan model Obat sudah ada dan terimport
+use App\Models\Transaksi; // Pastikan model Transaksi sudah ada dan terimport
+use Illuminate\Http\Request;
+
+class DashboardController extends Controller
+{
+    /**
+     * Display the dashboard view with relevant data.
+     */
+    public function index()
+    {
+        // Hitung jumlah user
+        $totalUsers = User::count();
+
+        // Hitung jumlah obat
+        $totalObat = Obat::count();
+
+        // Hitung jumlah transaksi
+        $totalTransaksi = Transaksi::count();
+
+        // Hitung total pendapatan (sum dari total_harga di tabel transaksi)
+        $totalPendapatan = Transaksi::sum('total_harga');
+
+        // Teruskan data ke view dashboard
+        return view('dashboard', compact('totalUsers', 'totalObat', 'totalTransaksi', 'totalPendapatan'));
+    }
+}

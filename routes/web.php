@@ -11,14 +11,15 @@ use App\Http\Controllers\EkstraksiController;
 use App\Http\Controllers\PencampuranController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,7 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('ekstraksi', EkstraksiController::class);
     Route::resource('pencampuran', PencampuranController::class);
     Route::resource('transaksi', TransaksiController::class);
-    Route::resource('laporan', LaporanController::class);
+    Route::get('/laporan.index', [TransaksiController::class, 'laporan'])->name('laporan.index');
+    Route::get('/laporan.pdf', [TransaksiController::class, 'exportPdf'])->name('laporan.pdf');
+    Route::get('/laporan.excel', [TransaksiController::class, 'exportExcel'])->name('laporan.excel');
 });
 
 require __DIR__.'/auth.php';
