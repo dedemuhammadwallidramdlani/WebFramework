@@ -15,18 +15,18 @@ class DashboardController extends Controller
     public function index()
     {
         // Hitung jumlah user
-        $totalUsers = User::count();
+        $users = User::count();
 
         // Hitung jumlah obat
-        $totalObat = Obat::count();
+        $dataobat = Obat::count();
 
         // Hitung jumlah transaksi
-        $totalTransaksi = Transaksi::count();
+        $transaksi = Transaksi::count();
 
         // Hitung total pendapatan (sum dari total_harga di tabel transaksi)
         $totalPendapatan = Transaksi::sum('total_harga');
 
         // Teruskan data ke view dashboard
-        return view('dashboard', compact('totalUsers', 'totalObat', 'totalTransaksi', 'totalPendapatan'));
+        return view('dashboard', compact('users', 'dataobat', 'transaksi', 'totalPendapatan'));
     }
 }

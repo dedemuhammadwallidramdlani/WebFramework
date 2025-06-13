@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ekstraksi;
+use App\Models\Bahanbaku;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EkstraksiController extends Controller
 {
@@ -12,11 +14,8 @@ class EkstraksiController extends Controller
      */
     public function index()
     {
-        // Urutkan berdasarkan kolom yang valid, misalnya 'id' atau 'tanggal_ekstraksi'
-        $ekstraksi = Ekstraksi::orderBy('id', 'asc')->paginate(15);
-        return view('ekstraksi.index', [
-            "ekstraksi" => $ekstraksi
-        ]);
+        $ekstraksi = Ekstraksi::with('bahanbaku')->orderBy('id', 'asc')->paginate(15);
+        return view('ekstraksi.index', compact('ekstraksi'));
     }
 
     /**
@@ -24,7 +23,8 @@ class EkstraksiController extends Controller
      */
     public function create()
     {
-        return view('ekstraksi.create');
+        $bahanbakus = Bahanbaku::orderBy('nama')->get();
+        return view('ekstraksi.create', compact('bahanbakus'));
     }
 
     /**
@@ -32,19 +32,16 @@ class EkstraksiController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi data
         $data = $request->validate([
-            'bahanbaku_id' => 'required|integer',
+            'bahanbaku_id' => ['required', 'integer', Rule::exists('bahanbakus', 'id')],
             'hasil_ekstraksi' => 'required|numeric',
-            'satuan_hasil' => 'required|string', 
-            'tanggal_ekstraksi' => 'required|date', 
+            'satuan_hasil' => 'required|string',
+            'tanggal_ekstraksi' => 'required|date',
         ]);
 
-        // Simpan data ke database
         Ekstraksi::create($data);
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi created successfully.');
+        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi berhasil ditambahkan.');
     }
 
     /**
@@ -52,8 +49,7 @@ class EkstraksiController extends Controller
      */
     public function show(string $id)
     {
-        // Tampilkan detail data
-        $ekstraksi = Ekstraksi::findOrFail($id);
+        $ekstraksi = Ekstraksi::with('bahanbaku')->findOrFail($id);
         return view('ekstraksi.show', compact('ekstraksi'));
     }
 
@@ -62,9 +58,9 @@ class EkstraksiController extends Controller
      */
     public function edit(string $id)
     {
-        // Ambil data untuk diedit
         $ekstraksi = Ekstraksi::findOrFail($id);
-        return view('ekstraksi.edit', compact('ekstraksi'));
+        $bahanbakus = Bahanbaku::orderBy('nama')->get();
+        return view('ekstraksi.edit', compact('ekstraksi', 'bahanbakus'));
     }
 
     /**
@@ -72,15 +68,13 @@ class EkstraksiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validasi data
         $request->validate([
-            'bahanbaku_id' => 'required|integer',
+            'bahanbaku_id' => ['required', 'integer', Rule::exists('bahanbakus', 'id')],
             'hasil_ekstraksi' => 'required|numeric',
-            'satuan_hasil' => 'required|string', 
+            'satuan_hasil' => 'required|string',
             'tanggal_ekstraksi' => 'required|date',
         ]);
 
-        // Ambil data dan update
         $ekstraksi = Ekstraksi::findOrFail($id);
         $ekstraksi->update([
             'bahanbaku_id' => $request->bahanbaku_id,
@@ -89,8 +83,7 @@ class EkstraksiController extends Controller
             'tanggal_ekstraksi' => $request->tanggal_ekstraksi,
         ]);
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi updated successfully.');
+        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi berhasil diperbarui.');
     }
 
     /**
@@ -98,11 +91,9 @@ class EkstraksiController extends Controller
      */
     public function destroy(string $id)
     {
-        // Hapus data
         $ekstraksi = Ekstraksi::findOrFail($id);
         $ekstraksi->delete();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi deleted successfully.');
+        return redirect()->route('ekstraksi.index')->with('success', 'Ekstraksi berhasil dihapus.');
     }
 }

@@ -12,30 +12,49 @@
                     <form method="POST" action="{{ route('gudang.store') }}">
                         @csrf
 
-                        <div>
-                            <x-input-label for="obat_id" :value="__('obat_id')" />
-                            <x-text-input id="obat_id" class="block mt-1 w-full" type="text" name="obat_id" :value="old('obat_id')" required autofocus autocomplete="obat_id" />
+                        <!-- Obat Dropdown -->
+                        <div class="mt-4">
+                            <x-input-label for="obat_id" :value="__('Nama Obat')" />
+                            <select id="obat_id" name="obat_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-md shadow-sm" required>
+                                <option value="">Pilih Obat</option>
+                                @foreach($obats as $obat)
+                                    <option value="{{ $obat->id }}" {{ old('obat_id') == $obat->id ? 'selected' : '' }}>
+                                        {{ $obat->nama_obat }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <x-input-error :messages="$errors->get('obat_id')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="bahanbaku_id" :value="__('bahanbaku_id')" />
-                            <x-text-input id="bahanbaku_id" class="block mt-1 w-full" type="text" name="bahanbaku_id" :value="old('bahanbaku_id')" required autofocus autocomplete="bahanbaku_id" />
+                        <!-- Bahan Baku Dropdown -->
+                        <div class="mt-4">
+                            <x-input-label for="bahanbaku_id" :value="__('Nama Bahan Baku')" />
+                            <select id="bahanbaku_id" name="bahanbaku_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-md shadow-sm" required>
+                                <option value="">Pilih Bahan Baku</option>
+                                @foreach($bahanbakus as $bahan)
+                                    <option value="{{ $bahan->id }}" {{ old('bahanbaku_id') == $bahan->id ? 'selected' : '' }}>
+                                        {{ $bahan->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <x-input-error :messages="$errors->get('bahanbaku_id')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="jumlah" :value="__('jumlah')" />
-                            <x-text-input id="jumlah" class="block mt-1 w-full" type="text" name="jumlah" :value="old('jumlah')" required autofocus autocomplete="jumlah" />
+                        <!-- Jumlah -->
+                        <div class="mt-4">
+                            <x-input-label for="jumlah" :value="__('Jumlah')" />
+                            <x-text-input id="jumlah" class="block mt-1 w-full" type="text" name="jumlah" :value="old('jumlah')" required />
                             <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
                         </div>
 
-                        <div>
-                            <x-input-label for="tanggal_kadaluarsa" :value="__('tanggal_kadaluarsa')" />
-                            <x-text-input id="tanggal_kadaluarsa" class="block mt-1 w-full" type="text" name="tanggal_kadaluarsa" :value="old('tanggal_kadaluarsa')" required autofocus autocomplete="tanggal_kadaluarsa" />
+                        <!-- Tanggal Kadaluarsa -->
+                        <div class="mt-4">
+                            <x-input-label for="tanggal_kadaluarsa" :value="__('Tanggal Kadaluarsa')" />
+                            <x-text-input id="tanggal_kadaluarsa" class="block mt-1 w-full" type="date" name="tanggal_kadaluarsa" :value="old('tanggal_kadaluarsa')" required />
                             <x-input-error :messages="$errors->get('tanggal_kadaluarsa')" class="mt-2" />
                         </div>
 
+                        <!-- Tombol -->
                         <div class="flex items-center justify-end mt-4">
                             <x-danger-link-button class="ms-4" :href="route('gudang.index')">
                                 {{ __('Back') }}
@@ -44,6 +63,7 @@
                                 {{ __('Save') }}
                             </x-primary-button>
                         </div>
+
                     </form>
                 </div>
             </div>

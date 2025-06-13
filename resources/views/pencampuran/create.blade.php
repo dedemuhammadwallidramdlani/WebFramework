@@ -1,51 +1,64 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Add Pencampuran') }}
+            {{ __('Tambah Pencampuran') }}
         </h2>
     </x-slot>
+
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-sm">
-                <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-                    <form method="POST" action="{{ route('pencampuran.store') }}">
-                        @csrf
-                
-                        <!-- Name -->
-                        <div>
-                            <x-input-label for="obat_id" :value="__('obat_id')" />
-                            <x-text-input id="obat_id" class="block mt-1 w-full" type="text" name="obat_id" :value="old('obat_id')" required autofocus autocomplete="obat_id" />
-                            <x-input-error :messages="$errors->get('obat_id')" class="mt-2" />
-                        </div>
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6">
 
-                        <div>
-                            <x-input-label for="bahanbaku_id" :value="__('bahanbaku_id')" />
-                            <x-text-input id="bahanbaku_id" class="block mt-1 w-full" type="text" name="bahanbaku_id" :value="old('bahanbaku_id')" required autofocus autocomplete="bahanbaku_id" />
-                            <x-input-error :messages="$errors->get('bahanbaku_id')" class="mt-2" />
-                        </div>
+                <form method="POST" action="{{ route('pencampuran.store') }}">
+                    @csrf
 
-                        <div>
-                            <x-input-label for="jumlah_bahanbaku" :value="__('jumlah_bahanbaku')" />
-                            <x-text-input id="jumlah_bahanbaku" class="block mt-1 w-full" type="text" name="jumlah_bahanbaku" :value="old('jumlah_bahanbaku')" required autofocus autocomplete="jumlah_bahanbaku" />
-                            <x-input-error :messages="$errors->get('jumlah_bahanbaku')" class="mt-2" />
-                        </div>
+                    <!-- Obat -->
+<div class="mb-4">
+    <label for="obat_id" class="block text-sm font-medium text-gray-700 dark:text-white">Nama Obat</label>
+    <select name="obat_id" id="obat_id" required
+        class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+        <option value="">-- Pilih Obat --</option>
+        @foreach ($obat as $o)
+            <option value="{{ $o->id }}">{{ $o->nama_obat }}</option>
+        @endforeach
+    </select>
+</div>
 
-                        <div>
-                            <x-input-label for="tanggal_pencampuran" :value="__('tanggal_pencampuran')" />
-                            <x-text-input id="tanggal_pencampuran" class="block mt-1 w-full" type="text" name="tanggal_pencampuran" :value="old('tanggal_pencampuran')" required autofocus autocomplete="tanggal_pencampuran" />
-                            <x-input-error :messages="$errors->get('tanggal_pencampuran')" class="mt-2" />
-                        </div>
-                
-                        <div class="flex items-center justify-end mt-4">
-                            <x-danger-link-button class="ms-4" :href="route('pencampuran.index')">
-                                {{ __('Back') }}
-                            </x-danger-link-button>
-                            <x-primary-button class="ms-4">
-                                {{ __('Save') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
-                </div>
+<!-- Bahan Baku -->
+<div class="mb-4">
+    <label for="bahanbaku_id" class="block text-sm font-medium text-gray-700 dark:text-white">Nama Bahan Baku</label>
+    <select name="bahanbaku_id" id="bahanbaku_id" required
+        class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+        <option value="">-- Pilih Bahan Baku --</option>
+        @foreach ($bahanbaku as $b)
+            <option value="{{ $b->id }}">{{ $b->nama }}</option>
+        @endforeach
+    </select>
+</div>
+
+                    {{-- Jumlah Bahan Baku --}}
+                    <div class="mb-4">
+                        <label for="jumlah_bahanbaku" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Bahan Baku</label>
+                        <input type="number" name="jumlah_bahanbaku" id="jumlah_bahanbaku" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600">
+                    </div>
+
+                    {{-- Tanggal --}}
+                    <div class="mb-4">
+                        <label for="tanggal_pencampuran" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Pencampuran</label>
+                        <input type="date" name="tanggal_pencampuran" id="tanggal_pencampuran" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600">
+                    </div>
+
+                    {{-- Tombol --}}
+                    <div class="flex justify-end">
+                        <a href="{{ route('pencampuran.index') }}"
+                            class="inline-flex items-center px-4 py-2 mr-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md">Batal</a>
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Simpan</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

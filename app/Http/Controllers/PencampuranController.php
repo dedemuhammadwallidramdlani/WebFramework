@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pencampuran;
+use App\Models\Obat;
+use App\Models\BahanBaku;
 use Illuminate\Http\Request;
 
 class PencampuranController extends Controller
@@ -10,92 +12,88 @@ class PencampuranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $pencampuran = Pencampuran::orderBy('obat_id')->paginate(15);
-        return view('pencampuran.index', [
-            "pencampuran" => $pencampuran
-        ]);
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $query = Pencampuran::with(['obat', 'bahanbaku']);
+
+    if ($search) {
+        $query->whereHas('obat', function ($q) use ($search) {
+            $q->where('nama_obat', 'like', '%' . $search . '%');
+        })->orWhereHas('bahanbaku', function ($q) use ($search) {
+            $q->where('nama_bahan', 'like', '%' . $search . '%');
+        });
     }
+
+    $pencampuran = $query->orderBy('tanggal_pencampuran', 'desc')->paginate(10);
+
+    return view('pencampuran.index', compact('pencampuran'));
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('pencampuran.create');
-    }
+{
+    $obat = Obat::all();
+    $bahanbaku = BahanBaku::all();
+
+    return view('pencampuran.create', compact('obat', 'bahanbaku'));
+}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'obat_id' => 'required',
-            'bahanbaku_id' => 'required',
-            'jumlah_bahanbaku' => 'required',
-            'tanggal_pencampuran' => 'required',
+        $request->validate([
+            'obat_id' => 'required|integer',
+            'bahanbaku_id' => 'required|integer',
+            'jumlah_bahanbaku' => 'required|numeric',
+            'tanggal_pencampuran' => 'required|date',
         ]);
-        Pencampuran::create($data);
 
-        return redirect('/pencampuran');
-    }
+        Pencampuran::create($request->all());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('pencampuran.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $pencampuran = Pencampuran::find($id);
-        if (!$pencampuran) {
-            return redirect()->route('pencampuran.index')->with('error', 'Pencampuran not found.');
-        }
+        $pencampuran = Pencampuran::findOrFail($id);
         return view('pencampuran.edit', compact('pencampuran'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $pencampuran = Pencampuran::find($id);
-        if (!$pencampuran) {
-            return redirect()->route('pencampuran.index')->with('error', 'Pencampuran not found.');
-        }
-
-        $data = $request->validate([
-            'obat_id' => 'required',
-            'bahanbaku_id' => 'required',
-            'jumlah_bahanbaku' => 'required',
-            'tanggal_pencampuran' => 'required',
+        $request->validate([
+            'obat_id' => 'required|integer',
+            'bahanbaku_id' => 'required|integer',
+            'jumlah_bahanbaku' => 'required|numeric',
+            'tanggal_pencampuran' => 'required|date',
         ]);
 
-        $pencampuran->update($data);
+        $pencampuran = Pencampuran::findOrFail($id);
+        $pencampuran->update($request->all());
 
-        return redirect()->route('pencampuran.index')->with('success', 'Pencampuran updated successfully.');
+        return redirect()->route('pencampuran.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $pencampuran = Pencampuran::find($id);
-        if (!$pencampuran) {
-            return redirect()->route('pencampuran.index')->with('error', 'Pencampuran not found.');
-        }
-
+        $pencampuran = Pencampuran::findOrFail($id);
         $pencampuran->delete();
 
-        return redirect()->route('pencampuran.index')->with('success', 'Pencampuran deleted successfully.');
+        return redirect()->route('pencampuran.index')->with('success', 'Data berhasil dihapus.');
     }
 }

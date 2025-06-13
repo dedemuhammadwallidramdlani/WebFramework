@@ -16,7 +16,7 @@
                             </form>
                         </div>
                         <div class="sm:ml-16 sm:mt-0 sm:flex-none">
-                            <a type="button" href="{{ route('ekstraksi.create') }}"
+                            <a href="{{ route('ekstraksi.create') }}"
                                 class="relative inline-flex items-center px-4 py-2 font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">
                                 Add New
                             </a>
@@ -24,55 +24,41 @@
                     </div>
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-gray-700 uppercase bg-white dark:bg-gray-800 ">
+                            <thead class="text-sm text-gray-700 uppercase bg-white dark:bg-gray-800">
                                 <tr class="bg-white border-t border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>No</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Nama Bahan Baku</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Hasil Ekstaksi</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Satuan Ekstraksi</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Tanggal Ekstraksi</span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
-                                        <span>Aksi</span>
-                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">No</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Nama Bahan Baku</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Hasil Ekstraksi</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Satuan Ekstraksi</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Tanggal Ekstraksi</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
                                     $i = ($ekstraksi->currentPage() - 1) * $ekstraksi->perPage() + 1;
                                 @endphp
-                                @forelse($ekstraksi as $item) {{-- Ganti $supplier dengan $item --}}
+                                @forelse($ekstraksi as $item)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                            {{ $i++ }}
-                                        </td>
+                                        <td class="px-6 py-4 text-center">{{ $i++ }}</td>
                                         <td class="px-6 py-2 text-center">
-                                            {{ $item->bahanbaku_id }}
+                                            {{ $item->bahanbaku->nama ?? 'Tidak ditemukan' }}
                                         </td>
-                                        <td class="px-6 py-2 text-center">
-                                            {{ $item->hasil_ekstraksi }}
-                                        </td>
-                                        <td class="px-6 py-2 text-center">
-                                            {{ $item->satuan_hasil }}
-                                        </td>
-                                        <td class="px-6 py-2 text-center">
-                                            {{ $item->tanggal_ekstraksi }}
-                                        </td>
+                                        <td class="px-6 py-2 text-center">{{ $item->hasil_ekstraksi }}</td>
+                                        <td class="px-6 py-2 text-center">{{ $item->satuan_hasil }}</td>
+                                        <td class="px-6 py-2 text-center">{{ $item->tanggal_ekstraksi }}</td>
                                         <td class="px-6 py-2 text-center">
                                             <form id="delete-form-{{ $item->id }}" action="{{ route('ekstraksi.destroy', $item->id) }}" method="POST">
-                                                <a href="{{ route('ekstraksi.edit', $item->id) }}" class="focus:outline-none text-gray-50 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit</a>
+                                                <a href="{{ route('ekstraksi.edit', $item->id) }}"
+                                                   class="focus:outline-none text-gray-50 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
+                                                    Edit
+                                                </a>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" onclick="confirmDelete({{ $item->id }})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus</button>
+                                                <button type="button" onclick="confirmDelete({{ $item->id }})"
+                                                    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                                                    Hapus
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
@@ -91,11 +77,12 @@
             </div>
         </div>
     </div>
+
     <script>
-        function confirmDelete(supplierId) {
+        function confirmDelete(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Anda tidak akan dapat mengembalikan ini!",
+                text: "Data akan dihapus secara permanen!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -104,7 +91,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + supplierId).submit();
+                    document.getElementById('delete-form-' + id).submit();
                 }
             });
         }

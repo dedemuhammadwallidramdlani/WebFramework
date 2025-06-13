@@ -17,9 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan.index', [TransaksiController::class, 'laporan'])->name('laporan.index');
     Route::get('/laporan.pdf', [TransaksiController::class, 'exportPdf'])->name('laporan.pdf');
     Route::get('/laporan.excel', [TransaksiController::class, 'exportExcel'])->name('laporan.excel');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__.'/auth.php';

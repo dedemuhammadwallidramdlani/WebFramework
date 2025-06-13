@@ -4,6 +4,7 @@
             {{ __('Update Transaksi') }}
         </h2>
     </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-sm">
@@ -18,7 +19,10 @@
                             <select id="obat_id" name="obat_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required>
                                 <option value="">Pilih Obat</option>
                                 @foreach($obats as $obat)
-                                    <option value="{{ $obat->id }}" {{ $transaksi->obat_id == $obat->id ? 'selected' : '' }}>
+                                    <option 
+                                        value="{{ $obat->id }}" 
+                                        data-harga="{{ $obat->harga }}"
+                                        {{ $transaksi->obat_id == $obat->id ? 'selected' : '' }}>
                                         {{ $obat->nama_obat }}
                                     </option>
                                 @endforeach
@@ -42,11 +46,11 @@
                             <x-input-error :messages="$errors->get('tanggal_transaksi')" class="mt-2" />
                         </div>
 
-                        <!-- Total Harga -->
+                        <!-- Total Harga (readonly) -->
                         <div class="mt-4">
                             <x-input-label for="total_harga" :value="__('Total Harga')" />
-                            <x-text-input id="total_harga" class="block mt-1 w-full" type="number" name="total_harga" 
-                                :value="old('total_harga', $transaksi->total_harga)" required />
+                            <x-text-input id="total_harga" class="block mt-1 w-full bg-gray-100 dark:bg-gray-700" 
+                                type="number" name="total_harga" :value="old('total_harga', $transaksi->total_harga)" readonly />
                             <x-input-error :messages="$errors->get('total_harga')" class="mt-2" />
                         </div>
 
@@ -63,4 +67,31 @@
             </div>
         </div>
     </div>
+
+    {{-- Script for automatic total price calculation --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const obatSelect = document.getElementById('obat_id');
+            const jumlahInput = document.getElementById('jumlah');
+            const totalHargaInput = document.getElementById('total_harga');
+
+            function calculateTotal() {
+                const selectedOption = obatSelect.options[obatSelect.selectedIndex];
+                const harga = selectedOption.getAttribute('data-harga');
+                const jumlah = parseInt(jumlahInput.value) || 0;
+
+                if (harga) {
+                    totalHargaInput.value = harga * jumlah;
+                } else {
+                    totalHargaInput.value = 0;
+                }
+            }
+
+            obatSelect.addEventListener('change', calculateTotal);
+            jumlahInput.addEventListener('input', calculateTotal);
+
+            // Hitung total saat pertama kali dimuat
+            calculateTotal();
+        });
+    </script>
 </x-app-layout>

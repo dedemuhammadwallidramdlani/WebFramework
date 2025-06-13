@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gudang;
+use App\Models\Obat;
+use App\Models\Bahanbaku;
 use Illuminate\Http\Request;
 
 class GudangController extends Controller
@@ -23,7 +25,9 @@ class GudangController extends Controller
      */
     public function create()
     {
-        return view('gudang.create');
+        $obats = Obat::all();
+        $bahanbakus = Bahanbaku::all();
+        return view('gudang.create', compact('obats', 'bahanbakus'));
     }
 
     /**
@@ -35,11 +39,12 @@ class GudangController extends Controller
             'obat_id' => 'required',
             'bahanbaku_id' => 'required',
             'jumlah' => 'required',
-            'tanggal_kadaluarsa' => 'required|date', //Perbaikan validasi
+            'tanggal_kadaluarsa' => 'required|date',
         ]);
+
         Gudang::create($data);
 
-        return redirect('/gudang');
+        return redirect()->route('gudang.index')->with('success', 'Gudang berhasil ditambahkan.');
     }
 
     /**
@@ -55,8 +60,10 @@ class GudangController extends Controller
      */
     public function edit(string $id)
     {
-        $gudang = Gudang::find($id); // Ambil data gudang berdasarkan ID
-        return view('gudang.edit', compact('gudang'));
+        $gudang = Gudang::findOrFail($id);
+        $obats = Obat::all();
+        $bahanbakus = Bahanbaku::all();
+        return view('gudang.edit', compact('gudang', 'obats', 'bahanbakus'));
     }
 
     /**
@@ -68,13 +75,13 @@ class GudangController extends Controller
             'obat_id' => 'required',
             'bahanbaku_id' => 'required',
             'jumlah' => 'required',
-            'tanggal_kadaluarsa' => 'required|date', //Perbaikan validasi
+            'tanggal_kadaluarsa' => 'required|date',
         ]);
 
-        $gudang = Gudang::find($id); // Ambil data gudang berdasarkan ID
+        $gudang = Gudang::findOrFail($id);
         $gudang->update($request->all());
 
-        return redirect()->route('gudang.index')->with('success', 'Gudang updated successfully.');
+        return redirect()->route('gudang.index')->with('success', 'Gudang berhasil diperbarui.');
     }
 
     /**
@@ -82,9 +89,9 @@ class GudangController extends Controller
      */
     public function destroy(string $id)
     {
-        $gudang = Gudang::find($id); // Ambil data gudang berdasarkan ID
+        $gudang = Gudang::findOrFail($id);
         $gudang->delete();
 
-        return redirect()->route('gudang.index')->with('success', 'Gudang deleted successfully.');
+        return redirect()->route('gudang.index')->with('success', 'Gudang berhasil dihapus.');
     }
 }

@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <img src="{{ asset('images/logo.png') }}" alt="Mediko Logo" class="h-12 w-auto dark:filter dark:brightness-0 dark:invert">
                     </a>
                 </div>
 
@@ -46,6 +46,11 @@
             Gudang
         </a> -->
     </div>
+    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('gudang.index')" :active="request()->routeIs('gudang.index')">
+                        {{ __('Gudang') }}
+                    </x-nav-link>
+                </div>
 
     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('ekstraksi.index')" :active="request()->routeIs('ekstraksi.index')">
